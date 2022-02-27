@@ -5,8 +5,6 @@
 #include <redis-cpp/execute.h>
 #include <chrono>
 
-// https://github.com/tdv/redis-cpp
-
 int main()
 {
     try
@@ -43,7 +41,7 @@ int main()
         for (int i = 0; i < N; ++i)
         {
             rediscpp::value value{*stream};
-            //std::cout << "Set " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
+            // std::cout << "Set " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
         }
 
         // Executing command 'GET' N times without getting any response
@@ -60,11 +58,11 @@ int main()
         for (int i = 0; i < N; ++i)
         {
             rediscpp::value value{*stream};
-            //std::cout << "Get " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
+            // std::cout << "Get " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
         }
 
         auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << std::endl;
+        std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
     }
     catch (std::exception const &e)
     {
