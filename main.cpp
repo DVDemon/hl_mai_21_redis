@@ -4,6 +4,17 @@
 #include <redis-cpp/stream.h>
 #include <redis-cpp/execute.h>
 #include <chrono>
+#include <vector>
+
+// helper type for the visitor #4
+template <class... Ts>
+struct overloaded : Ts...
+{
+    using Ts::operator()...;
+};
+// explicit deduction guide (not needed as of C++20)
+template <class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
 
 int main()
 {
@@ -23,7 +34,7 @@ int main()
 
         auto start = std::chrono::high_resolution_clock::now();
 
-        int const N = 1000000;
+        int const N = 10;
         auto const key_pref = "my_key_";
 
         // Executing command 'SET' N times without getting any response
@@ -41,7 +52,7 @@ int main()
         for (int i = 0; i < N; ++i)
         {
             rediscpp::value value{*stream};
-            // std::cout << "Set " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
+            std::cout << "Set " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
         }
 
         // Executing command 'GET' N times without getting any response
@@ -58,11 +69,43 @@ int main()
         for (int i = 0; i < N; ++i)
         {
             rediscpp::value value{*stream};
-            // std::cout << "Get " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
+            std::cout << "Get " << key_pref << i << ": " << value.as<std::string_view>() << std::endl;
         }
 
         auto end = std::chrono::high_resolution_clock::now();
         std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+
+        std::string list_key{"my_list"};
+        response = rediscpp::execute(*stream, "del", list_key);
+        for(int i=0;i<10;++i){
+            response = rediscpp::execute(*stream, "rpush", list_key, std::to_string(i));
+        }
+
+        std::string command;
+        command = list_key;
+        command += " 0";
+        command += " -1";
+        response = rediscpp::execute(*stream, "LRANGE", list_key, "0", "-1");
+        if (response.is_array())
+        {
+
+            rediscpp::resp::deserialization::array::item_type val = response.get();
+
+            std::visit(overloaded{
+                           []([[maybe_unused]] auto arg) { std::cout << "not know"; },
+                           [](rediscpp::resp::deserialization::array arg) {
+                               std::cout << "List: " << arg.size() << std::endl;
+                               for (auto s : arg.get())
+                               {
+                                   std::visit(overloaded{
+                                                  []([[maybe_unused]] auto arg) { std::cout << "not know" << std::endl; },                          
+                                                  []([[maybe_unused]] rediscpp::resp::deserialization::bulk_string s) { std::cout << s.get() << std::endl; }
+                                                  },
+                                              s);
+                               }
+                           }},
+                       val);
+        }
     }
     catch (std::exception const &e)
     {
