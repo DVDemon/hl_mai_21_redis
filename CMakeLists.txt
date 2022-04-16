@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 project(hl_mai_21_redis)
 
 SET(EXECUTABLE "redis_test")
+SET(EXECUTABLE_PUBSUB "redis_pubsub")
 set (STD_CXX "c++17")
 set (REDISCPP_FLAGS "-DREDISCPP_HEADER_ONLY=ON")
 
@@ -19,4 +20,7 @@ set (LIBRARIES
 )
 
 add_executable(${EXECUTABLE} main.cpp)
+add_executable(${EXECUTABLE_PUBSUB} pubsub_main.cpp)
+
 target_link_libraries(${EXECUTABLE} ${LIBRARIES})
+target_link_libraries(${EXECUTABLE_PUBSUB} ${LIBRARIES})
