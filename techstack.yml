@@ -1,7 +1,8 @@
 repo_name: DVDemon/hl_mai_21_redis
 report_id: e5ea5d8957c5010c14d9f5059813db05
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-10T08:05:22+00:00'
+timestamp: '2024-01-05T08:57:51+00:00'
 requested_by: DVDemon
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1049/cplusplus.png
+  detection_source_url: https://github.com/DVDemon/hl_mai_21_redis
   detection_source: Repo Metadata
 - name: Redis
   description: Open source (BSD licensed), in-memory data structure store
@@ -26,6 +28,7 @@ tools:
   category: Data Stores
   sub_category: In-Memory Databases
   image_url: https://img.stackshare.io/service/1031/default_cbce472cd134adc6688572f999e9122b9657d4ba.png
+  detection_source_url: https://github.com/DVDemon/hl_mai_21_redis/blob/master/docker-compose.yml
   detection_source: docker-compose.yml
   last_updated_by: Dmitriy Dzyuba
   last_updated_on: 2022-02-17 06:26:15.000000000 Z
@@ -37,6 +40,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Java Build Tools
   image_url: https://img.stackshare.io/service/2424/0UlUI_y1_400x400.jpg
+  detection_source_url: https://github.com/DVDemon/hl_mai_21_redis
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -46,4 +50,5 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/DVDemon/hl_mai_21_redis
   detection_source: Repo Metadata
